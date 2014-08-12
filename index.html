@@ -38,48 +38,56 @@ hem son kullanıcıların yeni gönderi girmeleri için hem de girilmiş olan g�
 <h3>
 <a name="job-olusturma" class="anchor" href="#job-olusturma"><span class="octicon octicon-link"></span></a>job olusturma:</h3>
 
-<p>POST /job
+<pre><code>POST /job
 header: {
-  kapgel-auth: 
+  kapgel-auth: &lt;string&gt;
 }
 body: {
-  subStore: 
-  desi: 
-  recipient: 
-  pickUp:  
-  dropOff:  
-  callbackURL: 
-}  </p>
+  subStore: &lt;string&gt;
+  desi: &lt;num&gt;
+  recipient: &lt;Recipient&gt;
+  pickUp: &lt;address&gt;
+  dropOff: &lt;address&gt;
+  callbackURL: &lt;string&gt;
+}
+</code></pre>
 
 <h3>
 <a name="listeleme" class="anchor" href="#listeleme"><span class="octicon octicon-link"></span></a>listeleme</h3>
 
-<p>Bütün gönderilerin listesi için
-GET /job
+<p>Bütün gönderilerin listesi için</p>
+
+<pre><code>GET /job
 header: {
-  kapgel-auth: 
-  subStore: 
+  kapgel-auth: &lt;string&gt;
+  subStore: &lt;string&gt;
 }
 body: {}
-GET /job/:id
+</code></pre>
+
+<p>Tek bir gonderi icin:</p>
+
+<pre><code>GET /job/:id
 header: {
-  kapgel-auth: 
+  kapgel-auth: &lt;string&gt;
 }
 response:
 {
-  subStore: 
-  desi: 
-  recipient: 
-  pickUp:  
-  dropOff:  
-  status: 
-  error: 
-}  </p>
+  subStore: &lt;string&gt;
+  desi: &lt;num&gt;
+  recipient: &lt;Recipient&gt;
+  pickUp: &lt;address&gt;
+  dropOff: &lt;address&gt;
+  status: &lt;string&gt;
+  error: &lt;string&gt;
+}
+</code></pre>
 
 <h3>
 <a name="iptal-etme" class="anchor" href="#iptal-etme"><span class="octicon octicon-link"></span></a>iptal etme</h3>
 
-<p>POST /job/:id/cancel</p>
+<pre><code>POST /job/:id/cancel
+</code></pre>
       </section>
     </div>
 
