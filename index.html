@@ -47,14 +47,13 @@ header: {
 }
 body: {
   "username": "osman", 
-  "password":"471985"
+  "password":"kahramanmaras1978"
 }
 </code></pre>
 
 <p>Cevap:</p>
 
 <pre><code>{
-  count: 0
   result: "0b833ef40-245c-11e4-8b24-05df52b6cb67"
 }
 </code></pre>
@@ -66,15 +65,24 @@ body: {
 
 <pre><code>POST /job
 header: {
-  kapgel-auth: &lt;string&gt;
+  kapgel-auth: 0b833ef40-245c-11e4-8b24-05df52b6cb67
 }
-body: {
-  subStore: &lt;string&gt;
-  desi: &lt;num&gt;
-  recipient: &lt;Recipient&gt;
-  pickUp: &lt;address&gt;
-  dropOff: &lt;address&gt;
-  callbackURL: &lt;string&gt;
+body: { 
+  "subStore": "53b169b05b4856ab90e05d15",
+  "desi": 3,
+  "recipient": {
+    "name": "Mehmet Yilmaz",
+    "phone": "05321234567",
+    "notes": "Merdivenden cikinca 5. katta, zili calmayin"
+  },
+  "dropOff": [{
+    "number": 21,
+    "apartment": 10,
+    "state": "Beykoz",
+    "street": "Çay Ocağı Sk",
+    "city": "İstanbul",
+    "country": "Türkiye"
+  }]
 }
 </code></pre>
 
@@ -85,8 +93,8 @@ body: {
 
 <pre><code>GET /job
 header: {
-  kapgel-auth: &lt;string&gt;
-  subStore: &lt;string&gt;
+  kapgel-auth: 0b833ef40-245c-11e4-8b24-05df52b6cb67,
+  subStore: 53b169b05b4856ab90e05d15
 }
 body: {}
 </code></pre>
