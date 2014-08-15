@@ -36,6 +36,32 @@ hem son kullanıcıların yeni gönderi girmeleri için hem de girilmiş olan g�
 <p>Kapgel API'ın son versiyonunun temel URL'i <a href="https://api.kapgel.com/1">https://api.kapgel.com/1</a> dir. HTTP istekleri bu URL'i kullanan adreslere gönderilecektir. Bu dökümantasyondaki diğer bütün adresler bu temel adresin ardına eklenmelidir.</p>
 
 <h3>
+<a name="kimlik-do%C4%9Frulama-ve-yetki-anahtar%C4%B1na-ula%C5%9Fma" class="anchor" href="#kimlik-do%C4%9Frulama-ve-yetki-anahtar%C4%B1na-ula%C5%9Fma"><span class="octicon octicon-link"></span></a>Kimlik Doğrulama ve yetki anahtarına ulaşma</h3>
+
+<p>Bu istek sadece bir defa yapılıp yetki anahtarına ulaşmak için kullanılabilir. Yetki anahtarı değişmediği için programınızda her zaman kullanıcı adı ve şifre göndermek yerine, yetki anahtarınızı kaydedip onu bir daha sorgulamamanızı tavsiye ediyoruz.
+İstek:</p>
+
+<pre><code>POST /auth
+header: {
+  "Content-Type": "application/json"
+}
+body: {
+  "username": "osman", 
+  "password":"471985"
+}
+</code></pre>
+
+<p>Cevap:</p>
+
+<pre><code>{
+  count: 0
+  result: "0b833ef40-245c-11e4-8b24-05df52b6cb67"
+}
+</code></pre>
+
+<p>Cevaptaki 'result' öğesi sizin yetki anahtarınızdır.</p>
+
+<h3>
 <a name="job-olusturma" class="anchor" href="#job-olusturma"><span class="octicon octicon-link"></span></a>job olusturma:</h3>
 
 <pre><code>POST /job
