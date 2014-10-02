@@ -117,44 +117,41 @@ body: {
 <p>Cevap: </p>
 
 <pre><code>{
-  "count":1,
-  "result":{
-    "id":"53edfd328c28863e01c63d06",
-    "status":"created",
-    "store":"53b15f7d23603387906b6e8e",
-    "branch":"53b169b05b4856ab90e05d15",
-    "desi":3,
-    "origin": {
-      "number" : "12",
-      "apartment" : "Urban Station Galata",
-      "street" : "Serdar-ı Ekrem Caddesi",
-      "neighborhood" : "Şahkulu Mh.",
-      "county" : "Beyoğlu",
-      "city" : "Istanbul",
-      "country" : "Turkey"
-    },
-    "destination":{
-      "number":"21",
-      "apartment":"10",
-      "street":"Çay Ocağı Sk",
-      "neighborhood" : "Çubuklu Mh.",
-      "county":"Beykoz",
-      "city":"İstanbul",
-      "country":"Türkiye"
-    },
-    "sender": {
-      "name": "Adem Demir",
-      "phone": "05053333333",
-      "notes": "Adem Bey 12-1 arası ulaşılamayabilir"
-    },
-    "recipient":{
-      "name":"Mehmet Yilmaz",
-      "phone":"+905321234567",
-      "notes":"Merdivenden cikinca 5. katta, zili calmayin"
-    },
-    "updatedAt":"2014-08-15T12:29:38.761Z",
-    "createdAt":"2014-08-15T12:29:38.047Z"
-  }
+  "id":"53edfd328c28863e01c63d06",
+  "status":"created",
+  "store":"53b15f7d23603387906b6e8e",
+  "branch":"53b169b05b4856ab90e05d15",
+  "desi":3,
+  "origin": {
+    "number" : "12",
+    "apartment" : "Urban Station Galata",
+    "street" : "Serdar-ı Ekrem Caddesi",
+    "neighborhood" : "Şahkulu Mh.",
+    "county" : "Beyoğlu",
+    "city" : "Istanbul",
+    "country" : "Turkey"
+  },
+  "destination":{
+    "number":"21",
+    "apartment":"10",
+    "street":"Çay Ocağı Sk",
+    "neighborhood" : "Çubuklu Mh.",
+    "county":"Beykoz",
+    "city":"İstanbul",
+    "country":"Türkiye"
+  },
+  "sender": {
+    "name": "Adem Demir",
+    "phone": "05053333333",
+    "notes": "Adem Bey 12-1 arası ulaşılamayabilir"
+  },
+  "recipient":{
+    "name":"Mehmet Yilmaz",
+    "phone":"+905321234567",
+    "notes":"Merdivenden cikinca 5. katta, zili calmayin"
+  },
+  "updatedAt":"2014-08-15T12:29:38.761Z",
+  "createdAt":"2014-08-15T12:29:38.047Z"
 }
 </code></pre>
 
@@ -165,8 +162,7 @@ body: {
 
 <pre><code>GET /delivery
 header: {
-  kapgel-auth: 0b833ef40-245c-11e4-8b24-05df52b6cb67,
-  branch: 53b169b05b4856ab90e05d15
+  kapgel-auth: 0b833ef40-245c-11e4-8b24-05df52b6cb67
 }
 </code></pre>
 
