@@ -217,7 +217,7 @@ Cevap:
 Cevaptaki *token* alanı sizin yetki anahtarınızdır. Bundan sonraki
 isteklerinizde bu anahtarı header'da *kapgel-auth:* olarak belirtmelisiniz.
 ## *Branch* leri listeleme
-Kullanıcının *store* una bağlı olan bütün *branch*leri listeler:
+Kullanıcının *store* una bağlı olan bütün *branch* leri listeler:
 ```
 GET /branch
 header: {
