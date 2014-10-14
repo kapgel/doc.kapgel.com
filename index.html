@@ -31,22 +31,24 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h3>
-<a name="kapgel-%C4%B0%C5%9F-g%C3%B6nderme-ve-takip-sistemi-api-d%C3%B6k%C3%BCmantasyonu" class="anchor" href="#kapgel-%C4%B0%C5%9F-g%C3%B6nderme-ve-takip-sistemi-api-d%C3%B6k%C3%BCmantasyonu"><span class="octicon octicon-link"></span></a>Kapgel İş Gönderme ve Takip Sistemi API dökümantasyonu</h3>
+        <h1>
+<a name="kapgel-%C4%B0%C5%9F-g%C3%B6nderme-ve-takip-sistemi-api-d%C3%B6k%C3%BCmantasyonu" class="anchor" href="#kapgel-%C4%B0%C5%9F-g%C3%B6nderme-ve-takip-sistemi-api-d%C3%B6k%C3%BCmantasyonu"><span class="octicon octicon-link"></span></a>KapGel İş Gönderme ve Takip Sistemi API dökümantasyonu</h1>
 
-<p>Kapgel API, kullanıcıların HTTP üzerinden güvenli bir şekide kapgel sistemine 
-programatik olarak erişmesini sağlar. Kapgel API hem son kullanıcıların yeni 
+<p>KapGel API, kullanıcıların HTTP üzerinden güvenli bir şekide KapGel sistemine 
+programatik olarak erişmesini sağlar. KapGel API hem son kullanıcıların yeni 
 gönderi girmeleri için hem de girilmiş olan gönderilerin bir admin tarafından 
 yönetimi için kullanılabilir. Bu sistemden beklenebilecek bazı özellikler şu 
-anda eksik olsa da nihai amacımız gönderi yapan bütün şirketlerin kapgel'i 
+anda eksik olsa da nihai amacımız gönderi yapan bütün şirketlerin KapGel'i 
 sistemlerine sorunsuz ve rahat bir sekilde entegre edebilmelerini sağlamaktır. 
 Eğer bir sorunuz olursa ve ya eklenmesini istediğiniz bir özellik olursa lütfen 
 bizimle irtibata geçin, isteklerinizi bir sonraki versiyonumuzda hayata 
 geçirmeye çalışacağız.</p>
 
-<p>Kapgel API'ın son versiyonunun temel URL'i <a href="https://api.kapgel.com/1">https://api.kapgel.com/1</a> dir. HTTP 
-istekleri bu URL'i kullanan adreslere gönderilecektir. Bu dökümantasyondaki 
-diğer bütün adresler bu temel adresin ardına eklenmelidir. Bütün isteklerde</p>
+<p>KapGel API'ın son versiyonunun temel URL'i <a href="https://api.kapgel.com/1">https://api.kapgel.com/1</a> dir(Sondaki
+'/1' versiyon numarasını belirtiyor olup gelecekteki versiyonlarda
+değişebilir).
+Aşağıdaki dökümantasyonda URL kısımlarında bu temel URL'in ardına eklenecek
+adresler belirtilmiştir. Bütün isteklerde header'da</p>
 
 <pre><code>Content-type: application/json
 </code></pre>
@@ -55,55 +57,397 @@ diğer bütün adresler bu temel adresin ardına eklenmelidir. Bütün isteklerd
 de yetki anahtarı aşağıdaki gibi belirtilmelidir:</p>
 
 <pre><code>Content-type: application/json
-kapgel-auth: 0b833ef40-245c-11e4-8b24-05df52b6cb67
+kapgel-auth: 03f1372d9-a534-4b79-8acf-c9ee3a88bfe4
 </code></pre>
 
-<p>İstek bodyleri her zaman json formatında gönderilmelidir. </p>
+<p>(Yukarıdakı yetki anahtarı ve aşağıdakiler örnek içindir. Test ederken kendi
+yetki anahtarınızı kullanmayı unutmayınız :) )</p>
+
+<p>İstek bodyleri her zaman json formatında gönderilmelidir.</p>
+
+<h2>
+<a name="kapgel-adres-format%C4%B1" class="anchor" href="#kapgel-adres-format%C4%B1"><span class="octicon octicon-link"></span></a>KapGel Adres Formatı</h2>
+
+<p>KapGel'deki bütün adreslerde aşağıdaki alanlar bulunur: </p>
+
+<ul>
+<li>
+<em>number</em>: Sokak numarası, opsiyonel.</li>
+<li>
+<em>apartment</em>: Apartman ve ya bina adı, opsiyonel.</li>
+<li>
+<em>street</em>: Sokak adı, zorunlu. Açık adres alınıyorsa bu alana açık adres
+yazılabilir. Diğer alanların belirtilmemesi halinde diğer alanlar bu alandan
+belirlenecektir.</li>
+<li>
+<em>neigborhood</em>: Mahalle adı, opsiyonel.</li>
+<li>
+<em>district</em>: Semt adı, opsiyonel.</li>
+<li>
+<em>county</em>: İlçe adı, opsiyonel. Gönderilerin planlanması için en azından ilçenin
+belirli olması gerekmektedir. Eğer adreslerinizi gönderirken ilçeyi
+belirlemiyorsanız, ilçe <em>street</em> alanından çıkarılmaya çalışılacaktır.</li>
+<li>
+<em>city</em>: İl adı, belirtilmemişse "İstanbul" olarak kabul edilir.</li>
+<li>
+<em>country</em>: Ülke adı, belirtilmemişse "Türkiye" olarak kabul edilir.</li>
+</ul>
+
+<p>Örnek ayrıntılı adres:</p>
+
+<pre><code>{
+  number: "39",
+  apartment: "Route 39",
+  street: "Mebusan Ykş.",
+  neighborhood: "Cihangir Mah.",
+  district: "Cihangir",
+  county: "Beyoğlu",
+  city: "İstanbul"
+}
+</code></pre>
+
+<p>Örnek açık adres:</p>
+
+<pre><code>{
+  street: "Cihangir Mah, Mebuşan Ykş, No:39, Route 39",
+  county: "Beyoğlu",
+  city: "İstanbul"
+}
+</code></pre>
+
+<p>Her ne kadar sistemimiz açık adresi kabul etse de, adres hatalarını en aza
+indirebilmek için ayrıntılı adres formatını kullanmanızı tavsiye ederiz.</p>
+
+<h2>
+<a name="kapgel-nesne-tipleri-ve-kavramlar" class="anchor" href="#kapgel-nesne-tipleri-ve-kavramlar"><span class="octicon octicon-link"></span></a>KapGel Nesne Tipleri ve Kavramlar</h2>
+
+<p>KapGel'i kullanan kullanıcılar, oluşturulan şirketler, şubeler ve gönderiler
+KapGel nesneleri olarak adlandırılır. Her KapGel nesnesinin bir id si vardır ve
+bu <em>_id</em> alaninda saklanir. Aşağıda KapGel nesnelerinin <em>_id</em> dışındaki
+alanları tanımlanmıştır. </p>
 
 <h3>
-<a name="kimlik-do%C4%9Frulama-ve-yetki-anahtar%C4%B1na-ula%C5%9Fma" class="anchor" href="#kimlik-do%C4%9Frulama-ve-yetki-anahtar%C4%B1na-ula%C5%9Fma"><span class="octicon octicon-link"></span></a>Kimlik Doğrulama ve yetki anahtarına ulaşma</h3>
+<a name="user" class="anchor" href="#user"><span class="octicon octicon-link"></span></a><em>User</em>
+</h3>
+
+<p>KapGel sistemini kullanan kullanıcı. Kullanıcı adı (<em>username</em>) ve şifreye 
+(<em>password</em>) sahiptir. Aynı zamanda bir <em>store</em> la alakalıdır. Bir kullanıcı
+sadece bir <em>store</em> un  gönderilerini yönetebilir. Bir <em>store</em> birden fazla
+kullanıcıya sahip olabilir. Aynı kullanıcı adı ve şifreyi kullanarak web
+arayüzünden ve ya API'dan, kendi <em>store</em> u için yeni gönderi oluşturabilir ve
+ya varolan gönderileri yönetebilir.</p>
+
+<h3>
+<a name="contact" class="anchor" href="#contact"><span class="octicon octicon-link"></span></a><em>Contact</em>
+</h3>
+
+<p>Adı, soyadı (<em>fullName</em>) ve telefon numarası (<em>phone</em>) olan bir kişiyi temsil
+eder. Gönderiler teslim alınırken, teslim edilirken ve ya bir hata olduğunda
+aranacak kişidir.</p>
+
+<p>Örnek <em>contact</em></p>
+
+<pre><code>{
+  fullName: "Ahmet Yıldırım",
+  phone: "+902123232233"
+}
+</code></pre>
+
+<h3>
+<a name="store" class="anchor" href="#store"><span class="octicon octicon-link"></span></a><em>Store</em>
+</h3>
+
+<p>Gönderilerini KapGel kullanarak yapan bir mağazalar ve ya dükkanlar
+zincirini temsil eder. Bir ve ya birden fazla <em>user</em> tarafından yönetilir.
+Bir adı (<em>name</em>), logosu (<em>logo</em>), URL'i (<em>url</em>) ve <em>contact</em> i bulunur.</p>
+
+<h3>
+<a name="branch" class="anchor" href="#branch"><span class="octicon octicon-link"></span></a><em>Branch</em>
+</h3>
+
+<p>Gönderilerini KapGel kullanarak yapan bir <em>store</em> un bir tane şubesini temsil
+eder. Adı (<em>name</em>), adresi (<em>address</em>), ve <em>contact</em> i bulunur.</p>
+
+<p>Örnek <em>branch</em></p>
+
+<pre><code>{
+  _id: "543ce39bc525b5a602579697",
+  name: "pizzamyheart",
+  address: {
+    neighborhood: "Cihangir Mah.",
+    status: "OK",
+    apartment: "Route 39",
+    number: "39",
+    street: "Mebusan Ykş.",
+    district: "Cihangir",
+    county: "Beyoğlu",
+  },
+  contact: {
+    fullName: "Ahmet Yıldırım",
+    phone: "+902123232233"
+  },
+  no: 1020
+}
+</code></pre>
+
+<h3>
+<a name="delivery" class="anchor" href="#delivery"><span class="octicon octicon-link"></span></a><em>Delivery</em>
+</h3>
+
+<p>KapGel kullanılarak yapılan bir gönderiyi temsil eder. Aşağıdaki
+alanlara sahiptir:</p>
+
+<ul>
+<li>
+<em>store:</em> Gönderiyi yapan <em>store</em> un <em>_id</em> si. <em>delivery</em> yi oluşturan 
+kullanıcının bağlı olduğu <em>store</em>, <em>delivery</em> nin <em>store</em> u olarak kabul
+edilir.</li>
+<li>
+<em>branch:</em> Gönderinin alınacağı şubenin <em>_id</em> si. Bu alan opsiyoneldir. Eğer
+bu alan kullanıcı tarafından belirtilmişse kurye paketi almak için <em>branch</em> in
+adresine gider.</li>
+<li>
+<em>orderNo:</em> Gönderinin sipariş/paket numarası. Bu numara kullanıcı tarafından
+belirtilmelidir. Kurye gönderiyi teslim alırken bu numarayı belirterek
+alacaktır.</li>
+<li>
+<em>sender:</em> Gönderinin teslim alınacağı <em>contact</em>. Bu alan opsiyoneldir. 
+<em>sender</em> kullanıcı tarafından belirtilmemişse <em>branch</em> in <em>contact</em> i <em>sender</em>
+olarak kullanılır. <em>branch</em> belirtilmemişse <em>sender</em> belirtilmek zorundadır.</li>
+<li>
+<em>recipient:</em> Gönderinin teslim edileceği <em>contact</em>. Bu alan zorunludur.</li>
+<li>
+<em>from:</em> Gönderinin teslim alınacağı adres. Bu alan belirtilmemişse <em>branch</em>
+in adresi kullanılır. <em>branch</em> belirtilmemişse <em>from</em> belirtmek zorunludur.</li>
+<li>
+<em>to:</em> Gönderinin teslim edileceği adres. Bu alan belirtilmek zorundadır.</li>
+<li>
+<em>desi:</em> Gönderinin desi olarak boyutu.</li>
+</ul>
+
+<p>Gönderinin teslim alınacağı adres <em>branch</em> ten ve ya <em>sender</em> ve <em>from</em>
+alanları kullanılarak tespit edilir. Bu nedenle şubeden gönderilmeyen paketler
+için şube idsi belirtilmemesi gerekir.
+<em>branch</em> kullanılarak oluşturulan bir <em>delivery</em></p>
+
+<pre><code>{
+  "branch": "543ce39bc525b5a602579697",
+  "recipient": {
+    "fullName": "Mehmet Yilmaz",
+    "phone": "05321234567",
+    "notes": "Merdivenden cikinca 5. katta, zili calmayin"
+  },
+  "to": {
+    "number": 21,
+    "apartment": 10,
+    "address": "Çay Ocağı Sk, Çubuklu Mh, Beykoz, İstanbul, Türkiye"
+  },
+  "desi": 3
+}
+</code></pre>
+
+<p><em>branch</em> kullanılmadan oluşturulan bir <em>delivery</em></p>
+
+<pre><code>{
+  "desi": 3,
+  "sender": {
+    "fullName": "Adem Demir",
+    "phone": "05053333333",
+    "notes": "Adem Bey 12-1 arası ulaşılamayabilir"
+  },
+  "recipient": {
+    "fullName": "Mehmet Yilmaz",
+    "phone": "05321234567",
+    "notes": "Merdivenden cikinca 5. katta, zili calmayin"
+  },
+  "from": {
+    "number": 12,
+    "apartment" : "Urban Station Galata",
+    "address": "Şahkulu Mh., Serdar-ı Ekrem Caddesi",
+    "county": "Beyoğlu",
+    "city": "İstanbul"
+  },
+  "to": {
+    "number": 21,
+    "apartment": 10,
+    "address": "Çay Ocağı Sk, Çubuklu Mh, Beykoz, İstanbul, Türkiye"
+  }
+}
+</code></pre>
+
+<h2>
+<a name="kimlik-do%C4%9Frulama-ve-yetki-anahtar%C4%B1na-ula%C5%9Fma" class="anchor" href="#kimlik-do%C4%9Frulama-ve-yetki-anahtar%C4%B1na-ula%C5%9Fma"><span class="octicon octicon-link"></span></a>Kimlik Doğrulama ve yetki anahtarına ulaşma</h2>
 
 <p>Bu istek sadece bir defa yapılıp yetki anahtarına ulaşmak için kullanılabilir. 
 Yetki anahtarı değişmediği için programınızda her zaman kullanıcı adı ve şifre
 göndermek yerine, yetki anahtarınızı kaydedip onu bir daha sorgulamamanızı 
 tavsiye ediyoruz.</p>
 
-<p>İstek:</p>
-
 <pre><code>POST /auth
 header: {
   Content-Type: application/json
 }
 body: {
-  "username": "pizzamyheart", 
-  "password":"%@9vawB3t2$I"
+  "username": "pizza", 
+  "password": "myheart"
 }
 </code></pre>
 
 <p>Cevap:</p>
 
 <pre><code>{
-  "result": "0b833ef40-245c-11e4-8b24-05df52b6cb67"
+  token: "0e34f7b44-4704-4953-bef3-b73fa616b462"
 }
 </code></pre>
 
-<p>Cevaptaki 'result' öğesi sizin yetki anahtarınızdır.</p>
+<p>Cevaptaki <em>token</em> alanı sizin yetki anahtarınızdır. Bundan sonraki
+isteklerinizde bu anahtarı header'da <em>kapgel-auth:</em> olarak belirtmelisiniz.</p>
+
+<h2>
+<a name="branch-leri-listeleme" class="anchor" href="#branch-leri-listeleme"><span class="octicon octicon-link"></span></a>
+<em>Branch</em> leri listeleme</h2>
+
+<p>Kullanıcının <em>store</em> una bağlı olan bütün *branch*leri listeler:</p>
+
+<pre><code>GET /branch
+header: {
+  Content-type: application/json
+  kapgel-auth: 0e34f7b44-4704-4953-bef3-b73fa616b462
+}
+</code></pre>
+
+<p>Cevap:</p>
+
+<pre><code>[
+  {
+    _id: "543ce39bc525b5a602579697",
+    name: "pizzamyheart",
+    address: {
+      neighborhood: "Cihangir Mah.",
+      status: "OK",
+      apartment: "Route 39",
+      number: "39",
+      street: "Mebusan Ykş.",
+      district: "Cihangir",
+      county: "Beyoğlu"
+    },
+    contact: {
+      fullName: "Ahmet Yıldırım",
+      phone: "02123232233"
+    },
+    no: 1020
+  }
+]
+</code></pre>
 
 <h3>
-<a name="g%C3%B6nderi-olu%C5%9Fturma" class="anchor" href="#g%C3%B6nderi-olu%C5%9Fturma"><span class="octicon octicon-link"></span></a>Gönderi oluşturma:</h3>
+<a name="g%C3%B6nderi-olu%C5%9Fturma" class="anchor" href="#g%C3%B6nderi-olu%C5%9Fturma"><span class="octicon octicon-link"></span></a>Gönderi Oluşturma:</h3>
+
+<p>Gönderi oluşturulurken <em>branch</em> belirtilirse teslim alma adres bilgileri
+<em>branch</em> ten alınacaktır. Diğer durum da <em>sender</em> ve <em>from</em> bilgileri teslim
+alma adresi olarak kullanılacaktır.
+<em>branch</em> kullanılarak oluşturulan bir <em>delivery</em></p>
 
 <pre><code>POST /delivery
 header: {
   Content-Type: application/json
-  kapgel-auth: 0b833ef40-245c-11e4-8b24-05df52b6cb67
+  kapgel-auth: 0e34f7b44-4704-4953-bef3-b73fa616b462
 }
-body: { 
-  "branch": "53b169b05b4856ab90e05d15",
+body: {
+  "desi": 3,
+  "branch": "543ce39bc525b5a602579697",
+  "recipient": {
+    "fullName": "Mehmet Yilmaz",
+    "phone": "05321234567",
+    "notes": "Merdivenden cikinca 5. katta, zili calmayin"
+  },
+  "to": {
+    "number": 21,
+    "apartment": 10,
+    "address": "Çay Ocağı Sk, Çubuklu Mh, Beykoz, İstanbul, Türkiye"
+  }
+}
+</code></pre>
+
+<p>Cevap:</p>
+
+<pre><code>{
+  "recipient": {
+    "type":"customer",
+    "fullName":"Mehmet Yilmaz",
+    "phone":"+905321234567"
+  },
+  "sender": {
+    "type":"branch","
+    fullName":"Ahmet Yıldırım",
+    "phone":"02123332233"
+  },
+  "destination": {
+    "county":"Beykoz",
+    "neighborhood":"Çubuklu Mah.",
+    "street":"Çay Ocağı Sokak (G-34 Sk.)",
+    "number":"21",
+    "apartment":"10",
+    "country":"Turkey",
+    "city":"İstanbul"
+  },
+  "origin": {
+    "apartment":"Route 39",
+    "number":"39",
+    "street":"Cihangir Caddesi",
+    "neighborhood":"Cihangir Mah.",
+    "district":"Cihangir",
+    "county":"Beyoğlu",
+    "country":"Turkey",
+    "city":"İstanbul"
+  },
+  "branch": {
+    "_id":"543ce39bc525b5a602579697",
+    "name":"pizzamyheart"
+  },
+  "store":"543cdee4efc938760208b105",
+  "events":[{
+    "name":"created",
+    "message":"Gönderi oluşturuldu",
+    "loc":[],
+    "time":"2014-10-14T10:40:35.939Z"
+  }],
+  "paid":false,
+  "desi":3,
+  "to": {
+    "address": "Çay Ocağı Sk, Çubuklu Mh, Beykoz, İstanbul, Türkiye",
+    "apartment":"10",
+    "number":"21"
+  },
+  "status": "created",
+  "approved":false,
+  "_id":"543cfda3cb3b375a048a85ac",
+  "no":1174,
+  "updatedAt":"2014-10-14T10:40:35.945Z",
+  "createdAt":"2014-10-14T10:40:35.922Z"
+}
+</code></pre>
+
+<p><em>branch</em> kullanılmadan oluşturulan bir <em>delivery</em></p>
+
+<pre><code>POST /delivery
+header: {
+  Content-Type: application/json
+  kapgel-auth: 0e34f7b44-4704-4953-bef3-b73fa616b462
+}
+body: {
   "desi": 3,
   "sender": {
     "fullName": "Adem Demir",
     "phone": "05053333333",
     "notes": "Adem Bey 12-1 arası ulaşılamayabilir"
+  },
+  "from": {
+    "number": 12,
+    "apartment" : "Urban Station Galata",
+    "address": "Şahkulu Mh., Serdar-ı Ekrem Caddesi",
+    "county": "Beyoğlu",
+    "city": "İstanbul"
   },
   "recipient": {
     "fullName": "Mehmet Yilmaz",
@@ -121,41 +465,61 @@ body: {
 <p>Cevap: </p>
 
 <pre><code>{
-  "id":"53edfd328c28863e01c63d06",
-  "status":"created",
-  "store":"53b15f7d23603387906b6e8e",
-  "branch":"53b169b05b4856ab90e05d15",
-  "desi":3,
-  "origin": {
-    "number" : "12",
-    "apartment" : "Urban Station Galata",
-    "street" : "Serdar-ı Ekrem Caddesi",
-    "neighborhood" : "Şahkulu Mh.",
-    "county" : "Beyoğlu",
-    "city" : "Istanbul",
-    "country" : "Turkey"
-  },
-  "destination":{
-    "number":"21",
-    "apartment":"10",
-    "street":"Çay Ocağı Sk",
-    "neighborhood" : "Çubuklu Mh.",
-    "county":"Beykoz",
-    "city":"İstanbul",
-    "country":"Türkiye"
+  "recipient": {
+    "type": "customer",
+    "fullName": "Mehmet Yilmaz",
+    "phone": "+905321234567"
   },
   "sender": {
-    "name": "Adem Demir",
-    "phone": "05053333333",
-    "notes": "Adem Bey 12-1 arası ulaşılamayabilir"
+    "type": "store",
+    "fullName": "Adem Demir",
+    "phone": "+905053333333"
   },
-  "recipient":{
-    "name":"Mehmet Yilmaz",
-    "phone":"+905321234567",
-    "notes":"Merdivenden cikinca 5. katta, zili calmayin"
+  "destination":{
+    "county": "Beykoz",
+    "neighborhood": "Çubuklu Mah.",
+    "street": "Çay Ocağı Sokak (G-34 Sk.)",
+    "number": "21",
+    "apartment": "10",
+    "country": "Turkey",
+    "city": "İstanbul"
   },
-  "updatedAt":"2014-08-15T12:29:38.761Z",
-  "createdAt":"2014-08-15T12:29:38.047Z"
+  "origin": {
+    "neighborhood": "Şahkulu Mah.",
+    "street": "Serdar-ı Ekrem Caddesi",
+    "county": "Beyoğlu",
+    "number": "12",
+    "apartment": "Urban Station Galata",
+    "country": "Turkey",
+    "city": "İstanbul"
+  },
+  "store": "543cdee4efc938760208b105",
+  "events": [{
+    "name": "created",
+    "message": "Gönderi oluşturuldu",
+    "loc": [],
+    "time": "2014-10-14T10:47:20.651Z"
+  }],
+  "paid": false,
+  "desi": 3,
+  "to": {
+    "address": "Çay Ocağı Sk, Çubuklu Mh, Beykoz, İstanbul, Türkiye",
+    "apartment": "10",
+    "number": "21"
+  },
+  "from": {
+    "address": "Şahkulu Mh., Serdar-ı Ekrem Caddesi",
+    "apartment": "Urban Station Galata",
+    "number": "12",
+    "county": "Beyoğlu",
+    "city": "İstanbul"
+  },
+  "status": "created",
+  "approved": false,
+  "_id":"543cff38cb3b375a048a85bd",
+  "no":1175,
+  "updatedAt": "2014-10-14T10:47:20.656Z",
+  "createdAt":"2014-10-14T10:47:20.640Z"
 }
 </code></pre>
 
@@ -166,25 +530,217 @@ body: {
 
 <pre><code>GET /delivery
 header: {
-  kapgel-auth: 0b833ef40-245c-11e4-8b24-05df52b6cb67
+  kapgel-auth: 0b833ef40-245c-11e4-8b24-05df52b6cb67,
+  branch: 53b169b05b4856ab90e05d15
 }
 </code></pre>
 
-<p>Tek bir gonderi icin:</p>
+<p>Cevap:</p>
 
-<pre><code>GET /delivery/53edfd328c28863e01c63d06
+<pre><code>[{
+  "_id": "543d0138cb3b375a048a85c9",
+  "recipient": {
+    "type": "customer",
+    "fullName": "Mehmet Yilmaz",
+    "phone": "+905321234567"
+  },
+  "sender": {
+    "type":"store",
+    "fullName": "Adem Demir",
+    "phone": "+905053333333"
+  },
+  "destination": {
+    "county": "Beykoz",
+    "neighborhood": "Çubuklu Mah.",
+    "street": "Çay Ocağı Sokak (G-34 Sk.)",
+    "status": "OK",
+    "number": "21",
+    "apartment": "10"
+  },
+  "origin": {
+    "neighborhood": "Şahkulu Mah.",
+    "street": "Serdar-ı Ekrem Caddesi",
+    "status": "OK",
+    "county": "Beyoğlu",
+    "number": "12",
+    "apartment": "Urban Station Galata"
+  },
+  "branch": null,
+  "events": [{
+    "name": "created",
+    "message": "Gönderi oluşturuldu",
+    "loc": [],
+    "time": "2014-10-14T10:55:52.244Z"
+  }],
+  "desi": 3,
+  "status": "created",
+  "approved": false,
+  "no": 1176,
+  "updatedAt": "2014-10-14T10:55:52.248Z",
+  "createdAt":"2014-10-14T10:55:52.233Z"
+}, {
+  "_id": "543d014ecb3b375a048a85d7",
+  "recipient": {
+    "type": "customer",
+    "fullName": "Mehmet Yilmaz",
+    "phone": "+905321234567"
+  },
+  "sender": {
+    "type": "branch",
+    "fullName": "Ahmet Yıldırım",
+    "phone": "02123332233"
+  },
+  "destination": {
+    "county":"Beykoz",
+    "neighborhood":"Çubuklu Mah.",
+    "street":"Çay Ocağı Sokak (G-34 Sk.)",
+    "status":"OK",
+    "number":"21",
+    "apartment":"10"
+  },
+  "origin": {
+    "status": "unsure",
+    "apartment": "Route 39",
+    "number": "39",
+    "street": "Cihangir Caddesi",
+    "neighborhood": "Cihangir Mah.",
+    "district": "Cihangir",
+    "county": "Beyoğlu"
+  },
+  "branch": {
+    "_id": "543ce39bc525b5a602579697",
+    "name": "pizzamyheart"
+  },
+  "events": [{
+    "name": "created",
+    "message": "Gönderi oluşturuldu",
+    "loc": [],
+    "time": "2014-10-14T10:56:14.981Z"
+  }],
+  "desi": 3,
+  "status": "created",
+  "approved": false,
+  "no":1177,
+  "updatedAt": "2014-10-14T10:56:14.986Z",
+  "createdAt":"2014-10-14T10:56:14.974Z"
+}]
+</code></pre>
+
+<p>Tek bir gonderi icin URL'de delivery <em>_id</em> sini belirtin:</p>
+
+<pre><code>GET /delivery/543d014ecb3b375a048a85d7
 header: {
   Content-Type: application/json
   kapgel-auth: 0b833ef40-245c-11e4-8b24-05df52b6cb67
 }
 </code></pre>
 
+<p>Cevap:</p>
+
+<pre><code>{
+  "_id": "543d014ecb3b375a048a85d7",
+  "recipient": {
+    "type": "customer",
+    "fullName": "Mehmet Yilmaz",
+    "phone": "+905321234567"
+  },
+  "sender": {
+    "type": "branch",
+    "fullName": "Ahmet Yıldırım",
+    "phone": "02123332233"
+  },
+  "destination": {
+    "county":"Beykoz",
+    "neighborhood":"Çubuklu Mah.",
+    "street":"Çay Ocağı Sokak (G-34 Sk.)",
+    "status":"OK",
+    "number":"21",
+    "apartment":"10"
+  },
+  "origin": {
+    "status": "unsure",
+    "apartment": "Route 39",
+    "number": "39",
+    "street": "Cihangir Caddesi",
+    "neighborhood": "Cihangir Mah.",
+    "district": "Cihangir",
+    "county": "Beyoğlu"
+  },
+  "branch": {
+    "_id": "543ce39bc525b5a602579697",
+    "name": "pizzamyheart"
+  },
+  "events": [{
+    "name": "created",
+    "message": "Gönderi oluşturuldu",
+    "loc": [],
+    "time": "2014-10-14T10:56:14.981Z"
+  }],
+  "desi": 3,
+  "status": "created",
+  "approved": false,
+  "no":1177,
+  "updatedAt": "2014-10-14T10:56:14.986Z",
+  "createdAt":"2014-10-14T10:56:14.974Z"
+}
+</code></pre>
+
 <h3>
 <a name="g%C3%B6nderi-onaylama" class="anchor" href="#g%C3%B6nderi-onaylama"><span class="octicon octicon-link"></span></a>Gönderi onaylama</h3>
 
-<pre><code>POST /delivery/53edfd328c28863e01c63d06/approve
+<pre><code>POST /delivery/543d014ecb3b375a048a85d7/approve
 header: {
   kapgel-auth: 0b833ef40-245c-11e4-8b24-05df52b6cb67
+}
+</code></pre>
+
+<p>Cevap:</p>
+
+<pre><code>{
+  "_id": "543d014ecb3b375a048a85d7",
+  "recipient": {
+    "type": "customer",
+    "fullName": "Mehmet Yilmaz",
+    "phone": "+905321234567"
+  },
+  "sender": {
+    "type": "branch",
+    "fullName": "Ahmet Yıldırım",
+    "phone": "02123332233"
+  },
+  "destination": {
+    "county":"Beykoz",
+    "neighborhood":"Çubuklu Mah.",
+    "street":"Çay Ocağı Sokak (G-34 Sk.)",
+    "status":"OK",
+    "number":"21",
+    "apartment":"10"
+  },
+  "origin": {
+    "status": "unsure",
+    "apartment": "Route 39",
+    "number": "39",
+    "street": "Cihangir Caddesi",
+    "neighborhood": "Cihangir Mah.",
+    "district": "Cihangir",
+    "county": "Beyoğlu"
+  },
+  "branch": {
+    "_id": "543ce39bc525b5a602579697",
+    "name": "pizzamyheart"
+  },
+  "events": [{
+    "name": "created",
+    "message": "Gönderi oluşturuldu",
+    "loc": [],
+    "time": "2014-10-14T10:56:14.981Z"
+  }],
+  "desi": 3,
+  "status": "created",
+  "approved": true,
+  "no":1177,
+  "updatedAt": "2014-10-14T10:56:14.986Z",
+  "createdAt":"2014-10-14T10:56:14.974Z"
 }
 </code></pre>
 
@@ -194,6 +750,42 @@ header: {
 <pre><code>POST /delivery/53edfd328c28863e01c63d06/cancel
 header: {
   kapgel-auth: 0b833ef40-245c-11e4-8b24-05df52b6cb67
+}
+</code></pre>
+
+<p>Cevap:</p>
+
+<pre><code>{
+  "_id": "543d014ecb3b375a048a85d7",
+  "recipient": "543ceb2e8b7b933203b8069d",
+  "sender": "543ce39bc525b5a602579695",
+  "destination": "543d014ecb3b375a048a85d8",
+  "origin": "543ce39bc525b5a602579696",
+  "branch": "543ce39bc525b5a602579697",
+  "store": "543cdee4efc938760208b105",
+  "events": [{
+    "name": "created",
+    "message": "Gönderi oluşturuldu",
+    "loc": [],
+    "time": "2014-10-14T10:56:14.981Z"
+  }, {
+    "name":"cancelled",
+    "message":"The status of delivery changed manually to cancelled",
+    "loc":[],
+    "time":"2014-10-14T11:07:09.147Z"
+  }],
+  "paid":false,
+  "desi":3,
+  "to": {
+    "address": "Çay Ocağı Sk, Çubuklu Mh, Beykoz, İstanbul, Türkiye",
+    "apartment": "10",
+    "number": "21"
+  },
+  "status":"cancelled",
+  "approved":true,
+  "no":1177,
+  "updatedAt": "2014-10-14T11:07:09.152Z",
+  "createdAt": "2014-10-14T10:56:14.974Z"
 }
 </code></pre>
       </section>
